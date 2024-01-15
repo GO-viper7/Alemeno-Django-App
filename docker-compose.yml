@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: ["gunicorn", "--bind", "0.0.0.0:8000", "Alemeno_Backend_Assign.wsgi:application"]
+    volumes:
+      - .:/Alemeno_Backend_Assign
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DJANGO_SETTINGS_MODULE=Alemeno_Backend_Assign.settings.dev
+
+  db:
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_DB=Alemeno
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=qwerty
+
+volumes:
+  postgres_data:
